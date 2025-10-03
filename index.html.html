@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Carta para Você ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffdde1, #fbc2eb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* envelope fechado */
+    .envelope {
+      position: relative;
+      width: 320px;
+      height: 200px;
+      background: #e63946;
+      cursor: pointer;
+      border-radius: 10px;
+      box-shadow: 0px 8px 20px rgba(0,0,0,0.25);
+      transition: transform 0.4s;
+      z-index: 2;
+    }
+
+    .envelope:hover {
+      transform: scale(1.05);
+    }
+
+    .envelope::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 160px solid transparent;
+      border-right: 160px solid transparent;
+      border-bottom: 100px solid #c71f37;
+      border-radius: 10px;
+    }
+
+    .envelope-text {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    /* container da carta (mensagens) */
+    .container {
+      display: none;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      border-radius: 25px;
+      text-align: center;
+      box-shadow: 0px 8px 30px rgba(0,0,0,0.25);
+      max-width: 550px;
+      position: relative;
+      z-index: 3;
+    }
+
+    h1 {
+      color: #e63946;
+      font-size: 2.2em;
+    }
+
+    .text {
+      font-size: 18px;
+      margin-bottom: 25px;
+      color: #444;
+    }
+
+    .highlight {
+      font-weight: bold;
+      color: #e63946;
+    }
+
+    button {
+      padding: 12px 28px;
+      background: linear-gradient(135deg, #e63946, #ff4d6d);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      font-size: 17px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin: 10px;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0px 5px 15px rgba(230,57,70,0.6);
+    }
+
+    .hidden {
+      display: none;
+      margin-top: 25px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    /* corações animados */
+    .heart {
+      position: absolute;
+      color: rgba(230,57,70,0.7);
+      font-size: 20px;
+      animation: floatUp 6s linear forwards;
+      user-select: none;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(100vh) scale(1);
+        opacity: 0.8;
+      }
+      to {
+        transform: translateY(-100px) scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: #e63946;
+      margin-bottom: 10px;
+    }
+
+    .final-message {
+      font-size: 20px;
+      color: #e63946;
+      font-weight: bold;
+      margin-top: 20px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    /* plano de fundo com corações flutuantes */
+    #background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div id="background"></div>
+
+  <!-- envelope inicial -->
+  <div class="envelope" id="envelope">
+    <div class="envelope-text">💌 Abrir Carta</div>
+  </div>
+
+  <!-- carta com mensagens -->
+  <div class="container" id="carta">
+    <h1>Oi, meu bem ❤️</h1>
+    <p class="text">
+      Eu sei que errei, e não gosto quando a gente briga... <br>
+      Quero te pedir <span class="highlight">desculpas</span> de uma forma especial. <br>
+      Você é muito importante pra mim, sempre foi, e eu não quero te ver triste comigo. ❤️
+    </p>
+    <button id="revealBtn">Abrir Mensagem</button>
+    <button id="closeBtn">Fechar Carta</button>
+
+    <div class="hidden" id="message">
+      <h2>✨ Prometo me esforçar mais ✨</h2>
+      <p>
+        Vou cuidar de você, te ouvir melhor, e me dedicar pra te fazer sorrir todos os dias.  
+        Porque você é o maior presente que Deus me deu. 💕
+      </p>
+      <div class="hearts" id="hearts"></div>
+      <p class="final-message">Te amo viu💖</p>
+      <p>(Me Desculpa bem bem!!)</p>
+    </div>
+  </div>
+
+  <script>
+    const envelope = document.getElementById("envelope");
+    const carta = document.getElementById("carta");
+    const btn = document.getElementById("revealBtn");
+    const closeBtn = document.getElementById("closeBtn");
+    const msg = document.getElementById("message");
+    const heartsContainer = document.getElementById("hearts");
+    const background = document.getElementById("background");
+
+    // cria corações flutuantes no fundo
+    function createBackgroundHearts() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 30 + 10 + "px";
+      background.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 6000);
+    }
+
+    setInterval(createBackgroundHearts, 500);
+
+    // abre a carta
+    envelope.addEventListener("click", () => {
+      envelope.style.display = "none";
+      carta.style.display = "block";
+    });
+
+    // revela a mensagem
+    btn.addEventListener("click", () => {
+      msg.style.display = "block";
+      startHearts();
+    });
+
+    // fecha a carta e volta ao envelope
+    closeBtn.addEventListener("click", () => {
+      carta.style.display = "none";
+      msg.style.display = "none";
+      heartsContainer.innerHTML = "";
+      envelope.style.display = "block";
+    });
+
+    // corações dentro da carta
+    function startHearts() {
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 90 + "%";
+        heartsContainer.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+      }, 500);
+    }
+  </script>
+</body>
+</html>
